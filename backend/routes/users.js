@@ -28,11 +28,11 @@ router.get('/:id', async(req, res) => {
 // POST route to create a new user
 router.post('/', async(req, res) => {
     try {
-        const user = await User.create(req.body)
-        res.status(201).json(user)
+        const user = await User.create(req.body);
+        res.status(201).json(user);
         
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 });
 
@@ -43,12 +43,22 @@ router.put("/:id", async(req, res) => {
         const {id} = req.params;
         const {body} = req;
         const updatedUser = await User.findByIdAndUpdate(id, body, {new: true});
-        res.json(updatedUser)
+        res.json(updatedUser);
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.json({ msg: "User not found!" });
     }
 });
 
 //DELETE route to delete an user
+router.delete("/:id", async(req, res) => {
+    try {
+        const {id} = req.params;
+        const deletedUser = await User.findByIdAndDelete(id);
+        res.json({ msg: "User deleted", deletedUser });
+    } catch (error) {
+        console.log(error);
+    }
+})
 
 export default router;
