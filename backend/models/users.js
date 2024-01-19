@@ -1,6 +1,6 @@
-import mongoose from 'mangoose';
+import mongoose from 'mongoose';
 
-const usersSchema = new mangoose.Schema({
+const usersSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
