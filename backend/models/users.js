@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 8;
 
 const usersSchema = new mongoose.Schema({
     username: {
@@ -26,7 +29,17 @@ const usersSchema = new mongoose.Schema({
         min: 21,
         max: 100
     }
-
+}, {
+    timestamps: true
 });
+
+// hide the password
+usersSchema.pre('save', async function(next){
+    // if the password has not change continue
+    if(!this.isModified("password")) return next();
+  
+    this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
+    return next()
+  })
 
 export default mongoose.model("User", usersSchema);
