@@ -3,7 +3,7 @@ import User from '../models/users.js';
 
 const router = new Router();
 
-// GET route to returns all users
+// GET route  returns all users
 router.get('/', async(req, res) => {
     try {
         const users = await User.find({});
@@ -13,8 +13,19 @@ router.get('/', async(req, res) => {
     }
 });
 
-// POST route to create a new user
+//GET/:id route returns a single user selected by id
+router.get('/:id', async(req, res) => {
+    try {
+        const {id} = req.params;
+        const user = await User.findById(id);
+        res.status(200).json(user)
+    } catch (error) {
+        console.log(error);
+        res.json({ msg: "User not found!" });
+    }
+});
 
+// POST route to create a new user
 router.post('/', async(req, res) => {
     try {
         const user = await User.create(req.body)
@@ -23,6 +34,21 @@ router.post('/', async(req, res) => {
     } catch (error) {
         console.log(error)
     }
-})
+});
+
+
+//PUT route to update an existing user
+router.put("/:id", async(req, res) => {
+    try {
+        const {id} = req.params;
+        const {body} = req;
+        const updatedUser = await User.findByIdAndUpdate(id, body, {new: true});
+        res.json(updatedUser)
+    } catch (error) {
+        console.log(error)
+    }
+});
+
+//DELETE route to delete an user
 
 export default router;
