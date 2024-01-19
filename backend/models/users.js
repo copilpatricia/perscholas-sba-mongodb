@@ -33,6 +33,10 @@ const usersSchema = new mongoose.Schema({
     timestamps: true
 });
 
+//indexes
+usersSchema.index({username: 1 });
+usersSchema.index({email: 1});
+
 // hide the password
 usersSchema.pre('save', async function(next){
     // if the password has not change continue
